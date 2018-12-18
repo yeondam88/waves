@@ -17,9 +17,26 @@ app.use(cookieParser());
 //== Models
 const { User } = require("./models/user");
 
+//== Middleware
+const { auth } = require("./middleware/auth");
+
 //============
 //  USER ROUTE
 //============
+
+app.get("/api/users/auth", auth, (req, res) => {
+  const { email, firstname, lastname, role, cart, history } = req.user;
+  res.status(200).json({
+    isAdmin: role === 0 ? false : true,
+    isAuth: true,
+    email: email,
+    firstname: firstname,
+    lastname: lastname,
+    role: role,
+    cart: cart,
+    history: history
+  });
+});
 
 app.post("/api/users/register", (req, res) => {
   const user = new User(req.body);
@@ -27,8 +44,7 @@ app.post("/api/users/register", (req, res) => {
   user.save((err, userData) => {
     if (err) return res.json({ success: false, err });
     res.status(200).json({
-      success: true,
-      userData
+      success: true
     });
   });
 });
