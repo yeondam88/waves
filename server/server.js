@@ -77,6 +77,21 @@ app.post("/api/users/login", (req, res) => {
   );
 });
 
+app.get("/api/users/logout", auth, (req, res) => {
+  User.findOneAndUpdate(
+    {
+      _id: req.user._id
+    },
+    { token: "" },
+    (err, userData) => {
+      if (err) return res.json({ success: false, err });
+      return res.status(200).send({
+        success: true
+      });
+    }
+  );
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running at ${PORT}`);
 });
