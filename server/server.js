@@ -28,7 +28,23 @@ const { admin } = require("./middleware/admin");
 //      PRODUCTS
 //===================
 
-app.get("/api/product/product_by_id", (req, res) => {
+app.get("/api/products", (req, res) => {
+  let order = req.query.order ? req.query.order : "asc";
+  let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+  let limit = req.query.limit ? parseInt(req.query.limit) : 100;
+
+  Product.find()
+    .populate("brand")
+    .populate("wood")
+    .sort([[sortBy, order]])
+    .limit(limit)
+    .exec((err, products) => {
+      if (err) return res.status(400).send(err);
+      res.status(200).send(products);
+    });
+});
+
+app.get("/api/products/product_by_id", (req, res) => {
   let type = req.query.type;
   let items = req.query.id;
 
@@ -48,7 +64,7 @@ app.get("/api/product/product_by_id", (req, res) => {
     });
 });
 
-app.post("/api/product/add", auth, admin, (req, res) => {
+app.post("/api/products", auth, admin, (req, res) => {
   const product = new Product(req.body);
 
   product.save((err, productData) => {
@@ -62,7 +78,7 @@ app.post("/api/product/add", auth, admin, (req, res) => {
 //      WOODS
 //===================
 
-app.post("/api/product/wood", auth, admin, (req, res) => {
+app.post("/api/products/wood", auth, admin, (req, res) => {
   const wood = new Wood(req.body);
 
   wood.save((err, woodData) => {
@@ -72,7 +88,7 @@ app.post("/api/product/wood", auth, admin, (req, res) => {
   });
 });
 
-app.get("/api/product/woods", (req, res) => {
+app.get("/api/products/woods", (req, res) => {
   Wood.find({}, (err, woods) => {
     if (err) return res.status(400).send(err);
     res.status(200).send(woods);
@@ -83,7 +99,7 @@ app.get("/api/product/woods", (req, res) => {
 //      BRAND
 //===================
 
-app.post("/api/product/brand", auth, admin, (req, res) => {
+app.post("/api/products/brand", auth, admin, (req, res) => {
   const brand = new Brand(req.body);
 
   brand.save((err, productData) => {
@@ -93,7 +109,7 @@ app.post("/api/product/brand", auth, admin, (req, res) => {
   });
 });
 
-app.get("/api/product/brands", (req, res) => {
+app.get("/api/products/brands", (req, res) => {
   Brand.find({}, (err, brands) => {
     if (err) return res.status(400).send(err);
     res.status(200).send(brands);
