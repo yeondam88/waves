@@ -10,13 +10,14 @@ const FormField = ({ id, formData, change }) => {
             <input
               {...formData.config}
               value={formData.value}
-              onBlur={event => {}}
+              onBlur={event => change({ event, id, blur: true })}
+              onChange={event => change({ event, id })}
             />
           </div>
         );
         break;
       default:
-        formTemplate: null;
+        formTemplate = null;
     }
 
     return formTemplate;

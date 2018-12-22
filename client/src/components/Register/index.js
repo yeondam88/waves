@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Button from "../utils/Button";
+import Login from "../Register/Login";
 
 class Register extends Component {
   render() {
@@ -27,6 +28,7 @@ class Register extends Component {
             <div className="right">
               <h2>Registered Customers</h2>
               <p>If you have an account please log in</p>
+              <Login />
               <Button type="default" title="Login" linkTo="/login" />
             </div>
           </div>
