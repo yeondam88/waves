@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import { update, generateData, ifFormValid } from "../utils/Form/FormActions";
 import FormField from "../utils/Form/FormField";
+import { loginUser } from "../../actions/user_actions";
 
 class Login extends Component {
   state = {
@@ -59,7 +60,7 @@ class Login extends Component {
     let formIsValid = ifFormValid(this.state.formData, "login");
 
     if (formIsValid) {
-      console.log(dataToSubmit);
+      this.props.dispatch(loginUser(dataToSubmit));
     } else {
       this.setState({
         formError: true
