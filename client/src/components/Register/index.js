@@ -29,7 +29,6 @@ class Register extends Component {
               <h2>Registered Customers</h2>
               <p>If you have an account please log in</p>
               <Login />
-              <Button type="default" title="Login" linkTo="/login" />
             </div>
           </div>
         </div>
